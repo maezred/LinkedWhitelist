@@ -1,0 +1,27 @@
+name: ${name}
+main: ${groupId}.${artifactId}.${artifactId}
+version: ${version}-${maven.build.timestamp}
+description: ${description}
+author: moltendorf
+commands:
+  whitelist:
+    aliases: wl
+    description: Manipulate the whitelist.
+    usage: |
+      /<command> (add|remove|check) <player>
+      /<command> (enable|disable)
+    permission: linkedwhitelist.manage
+    permission-message: §cYou don't have permission.
+permissions:
+  linkedwhitelist.manage:
+    default: op
+    description: Allows a player to use /whitelist check.
+  linkedwhitelist.manage.add:
+    default: op
+    description: Allows a player to use /whitelist add.
+  linkedwhitelist.manage.remove:
+    default: op
+    description: Allows a player to use /whitelist remove.
+  linkedwhitelist.manage.toggle:
+    default: op
+    description: Allows a player to use /whitelist enable and /whitelist disable.
