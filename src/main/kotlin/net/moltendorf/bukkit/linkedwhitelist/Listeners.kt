@@ -20,7 +20,7 @@ class Listeners : Listener {
       val name = event.name
 
       try {
-        val permission = settings.storage.getPermissionForPlayer(id, name)
+        val permission = settings.storage!!.getPermissionForPlayer(id, name)
 
         if (permission == null || permission == false) {
           event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, "You are not whitelisted.")

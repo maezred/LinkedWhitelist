@@ -3,9 +3,8 @@ package net.moltendorf.bukkit.linkedwhitelist.storage
 import net.moltendorf.bukkit.linkedwhitelist.LinkedWhitelist
 import net.moltendorf.bukkit.linkedwhitelist.Settings
 import org.bukkit.configuration.ConfigurationSection
-
 import java.sql.*
-import java.util.UUID
+import java.util.*
 
 /**
  * Created by moltendorf on 15/07/27.
@@ -73,7 +72,7 @@ class MySQL(storageSection: ConfigurationSection) : AbstractStorage() {
       val url = "jdbc:mysql://$host:$port/$database?dontTrackOpenResources=true&useAffectedRows=true"
       connection = DriverManager.getConnection(url, username, password)
     } catch (exception: Exception) {
-      LinkedWhitelist.getInstance().getLogger().warning("Could not connect to MySQL database with provided information.")
+      LinkedWhitelist.instance!!.getLogger().warning("Could not connect to MySQL database with provided information.")
       exception.printStackTrace()
     }
 
@@ -86,13 +85,13 @@ class MySQL(storageSection: ConfigurationSection) : AbstractStorage() {
         connect()
 
         if (connection == null) {
-          LinkedWhitelist.getInstance().getLogger().warning("Failed to set permission for player $name.")
+          LinkedWhitelist.instance!!.getLogger().warning("Failed to set permission for player $name.")
 
           return false
         }
       }
     } catch (exception: SQLException) {
-      LinkedWhitelist.getInstance().getLogger().warning("Failed to set permission for player $name.")
+      LinkedWhitelist.instance!!.getLogger().warning("Failed to set permission for player $name.")
 
       throw StorageException()
     }
@@ -128,7 +127,7 @@ class MySQL(storageSection: ConfigurationSection) : AbstractStorage() {
 
       updated = statement.executeUpdate() > 0
     } catch (exception: SQLException) {
-      LinkedWhitelist.getInstance().getLogger().warning("Failed to set permission for player $name.")
+      LinkedWhitelist.instance!!.getLogger().warning("Failed to set permission for player $name.")
       exception.printStackTrace()
 
       throw StorageException()
@@ -153,13 +152,13 @@ class MySQL(storageSection: ConfigurationSection) : AbstractStorage() {
         connect()
 
         if (connection == null) {
-          LinkedWhitelist.getInstance().getLogger().warning("Failed to get permission for player $id.")
+          LinkedWhitelist.instance!!.getLogger().warning("Failed to get permission for player $id.")
 
           return false
         }
       }
     } catch (exception: SQLException) {
-      LinkedWhitelist.getInstance().getLogger().warning("Failed to get permission for player $id.")
+      LinkedWhitelist.instance!!.getLogger().warning("Failed to get permission for player $id.")
 
       throw StorageException()
     }
@@ -190,7 +189,7 @@ class MySQL(storageSection: ConfigurationSection) : AbstractStorage() {
         permission = result.getBoolean(++i)
       }
     } catch (exception: SQLException) {
-      LinkedWhitelist.getInstance().getLogger().warning("Failed to get permission for player $id.")
+      LinkedWhitelist.instance!!.getLogger().warning("Failed to get permission for player $id.")
       exception.printStackTrace()
 
       throw StorageException()

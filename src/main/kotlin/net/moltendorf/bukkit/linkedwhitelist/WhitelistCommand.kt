@@ -1,7 +1,6 @@
 package net.moltendorf.bukkit.linkedwhitelist
 
 import net.moltendorf.bukkit.linkedwhitelist.storage.StorageException
-import org.bukkit.OfflinePlayer
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -19,7 +18,7 @@ class WhitelistCommand : CommandExecutor {
       when (action) {
         "check" -> {
           if (commandSender.hasPermission("linkedwhitelist.manage")) {
-            val player = LinkedWhitelist.getInstance().getServer().getOfflinePlayer(strings[1])
+            val player = LinkedWhitelist.instance!!.getServer().getOfflinePlayer(strings[1])
 
             if (player != null) {
               try {
@@ -46,7 +45,7 @@ class WhitelistCommand : CommandExecutor {
 
         "add" -> {
           if (commandSender.hasPermission("linkedwhitelist.manage.add")) {
-            val player = LinkedWhitelist.getInstance().getServer().getOfflinePlayer(strings[1])
+            val player = LinkedWhitelist.instance!!.getServer().getOfflinePlayer(strings[1])
 
             if (player != null) {
               try {
@@ -71,7 +70,7 @@ class WhitelistCommand : CommandExecutor {
 
         "remove" -> {
           if (commandSender.hasPermission("linkedwhitelist.manage.remove")) {
-            val player = LinkedWhitelist.getInstance().getServer().getOfflinePlayer(strings[1])
+            val player = LinkedWhitelist.instance!!.getServer().getOfflinePlayer(strings[1])
 
             if (player != null) {
               try {

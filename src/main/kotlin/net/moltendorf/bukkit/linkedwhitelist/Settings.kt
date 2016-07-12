@@ -2,10 +2,7 @@ package net.moltendorf.bukkit.linkedwhitelist
 
 import net.moltendorf.bukkit.linkedwhitelist.storage.AbstractStorage
 import net.moltendorf.bukkit.linkedwhitelist.storage.MySQL
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.FileConfiguration
-
-import java.util.logging.Logger
 
 /**
  * Created by moltendorf on 15/06/29.
@@ -41,7 +38,7 @@ class Settings {
     private set
 
   init {
-    val instance = LinkedWhitelist.getInstance()
+    val instance = LinkedWhitelist.instance!!
     val log = instance.getLogger()
 
     // Make sure the default configuration is saved.
@@ -88,7 +85,7 @@ class Settings {
 
   private fun save() {
     if (dirty) {
-      LinkedWhitelist.getInstance().saveConfig()
+      LinkedWhitelist.instance!!.saveConfig()
       dirty = false
     }
   }
@@ -100,6 +97,6 @@ class Settings {
 
   companion object {
     val instance: Settings
-      get() = LinkedWhitelist.getInstance().getSettings()
+      get() = LinkedWhitelist.instance!!.settings!!
   }
 }

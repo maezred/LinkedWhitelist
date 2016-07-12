@@ -44,7 +44,7 @@ class LinkedWhitelist : JavaPlugin() {
 
       for (player in players) {
         try {
-          storage.setPermissionForPlayer(player.uniqueId, player.name, true, false)
+          storage!!.setPermissionForPlayer(player.uniqueId, player.name, true, false)
         } catch (exception: StorageException) {
           // Ignore.
         }
