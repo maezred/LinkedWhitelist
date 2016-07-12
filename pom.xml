@@ -2,63 +2,100 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.moltendorf.Bukkit</groupId>
-	<artifactId>LinkedWhitelist</artifactId>
-	<version>1.0.2</version>
+  <groupId>net.moltendorf.Bukkit</groupId>
+  <artifactId>LinkedWhitelist</artifactId>
+  <version>1.0.2</version>
 
-	<name>${artifactId}</name>
-	<description>Stores the whitelist in the database.</description>
+  <name>${artifactId}</name>
+  <description>Stores the whitelist in the database.</description>
 
-	<build>
-		<finalName>${artifactId}</finalName>
+  <properties>
+    <kotlin.version>1.0.3</kotlin.version>
+  </properties>
 
-		<resources>
-			<resource>
-				<directory>${basedir}/src/main/resources/</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
+  <build>
+    <finalName>${artifactId}</finalName>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <resources>
+      <resource>
+        <directory>${basedir}/src/main/resources/</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
 
-	<distributionManagement>
-		<repository>
-			<id>net.moltendorf.Bukkit</id>
-			<name>moltendorf.net</name>
-			<url>file:///${env.HOMEDRIVE}${env.HOMEPATH}\Sync\Nexus\</url>
-		</repository>
-	</distributionManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
 
-	<repositories>
-		<repository>
-			<id>net.moltendorf.Bukkit</id>
-			<url>https://fab.moltendorf.net/nexus/</url>
-		</repository>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/main/kotlin</source>
+              </sourceDirs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/test/kotlin</source>
+              </sourceDirs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
+  <distributionManagement>
+    <repository>
+      <id>net.moltendorf.Bukkit</id>
+      <name>moltendorf.net</name>
+      <url>file:///${env.HOME}/Sync/Nexus/</url>
+    </repository>
+  </distributionManagement>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
-			<version>LATEST</version>
-		</dependency>
-	</dependencies>
+  <repositories>
+    <repository>
+      <id>net.moltendorf.Bukkit</id>
+      <url>https://fab.moltendorf.net/nexus/</url>
+    </repository>
+    <repository>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.bukkit</groupId>
+      <artifactId>bukkit</artifactId>
+      <version>1.9-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-runtime</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+  </dependencies>
 </project>
