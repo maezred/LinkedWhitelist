@@ -1,0 +1,4 @@
+name: ${project.name}
+version: ${project.version} (${project.ext.buildDateTime})
+author: ${project.ext.author.name} <${project.ext.author.email}>
+main: ${project.group}.${project.ext.artifactId}.bungee.${project.name}

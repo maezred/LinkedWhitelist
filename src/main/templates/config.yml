@@ -1,11 +1,10 @@
 # Basic config.
 whitelist-enabled: true
 
-whitelist-existing-players: true
-inherit-default-whitelist: true
+whitelist-existing-players: false
+inherit-default-whitelist: false
 
-storage:
-  enabled: true
+database:
   type: mysql
   host: localhost
   port: 3306
@@ -15,4 +14,4 @@ storage:
   password: password
 
 # Enable/Disable the plugin entirely.
-enabled: false
+enabled: true
