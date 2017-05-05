@@ -1,4 +1,4 @@
-# Basic config.
+# Basic config
 whitelist-enabled: true
 
 whitelist-existing-players: false
@@ -13,5 +13,11 @@ database:
   username: username
   password: password
 
-# Enable/Disable the plugin entirely.
+# Enable/Disable the plugin entirely
 enabled: true
+
+# Ignore this config
+ignore: false
+
+# Enable test mode
+test: false

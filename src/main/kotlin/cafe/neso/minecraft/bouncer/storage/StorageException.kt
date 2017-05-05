@@ -1,4 +1,4 @@
-package cafe.neso.minecraft.bouncer.bukkit.storage
+package cafe.neso.minecraft.bouncer.storage
 
 /**
  * Created by moltendorf on 2015-08-06.

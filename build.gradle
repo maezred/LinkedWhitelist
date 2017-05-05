@@ -102,14 +102,37 @@ if (project.ext.isDirty) {
     tasks.publish.dependsOn 'copySources'
 }
 
-jar {
-    manifest.attributes 'Specification-Title': project.name,
-            'Specification-Vendor': "${project.ext.author.name} <${project.ext.author.email}>",
-            'Implementation-Title': "${project.group}.${project.ext.artifactId}.${project.name}",
-            'Implementation-Version': project.version
+repositories {
+    mavenCentral()
+
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
+    maven { url 'https://fab.moltendorf.net/nexus/releases' }
 }
 
+dependencies {
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlin_version}"
+    shadow "org.jetbrains.kotlin:kotlin-reflect:${kotlin_version}"
+
+    compile 'net.md-5:bungeecord-api:1.9+'
+    compile 'org.spigotmc:spigot-api:1.9+'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+configurations {
+    compile.extendsFrom shadow
+
+    runtime.exclude module: 'bungeecord-api'
+    runtime.exclude module: 'spigot-api'
+}
+
+jar.enabled = false
+
 shadowJar {
+    configurations = [project.configurations.shadow]
+
     baseName = project.name
     version = project.version
     classifier = null
@@ -129,6 +152,15 @@ shadowJar {
 
         expand project: project
     }
+
+    manifest.attributes 'Specification-Title': project.name,
+            'Specification-Vendor': "${project.ext.author.name} <${project.ext.author.email}>",
+            'Implementation-Title': "${project.group}.${project.ext.artifactId}.${project.name}",
+            'Implementation-Version': project.version
+
+//    relocate 'kotlin', "${project.group}.${project.ext.artifactId}.lib.kotlin"
+//    relocate 'org.intellij.lang.annotations', "${project.group}.${project.ext.artifactId}.lib.org.intellij.lang.annotations"
+//    relocate 'org.jetbrains.annotations', "${project.group}.${project.ext.artifactId}.lib.org.jetbrains.annotations"
 }
 
 publishing {
@@ -150,26 +182,4 @@ publishing {
             }
         }
     }
-}
-
-repositories {
-    mavenCentral()
-
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
-    maven { url 'https://fab.moltendorf.net/nexus/releases' }
-}
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlin_version}"
-
-    compile 'net.md-5:bungeecord-api:1.9+'
-    compile 'org.spigotmc:spigot-api:1.9+'
-
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-configurations {
-    runtime.exclude module: 'spigot-api'
 }

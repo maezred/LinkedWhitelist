@@ -1,7 +1,7 @@
 package cafe.neso.minecraft.bouncer.bukkit
 
+import cafe.neso.minecraft.bouncer.*
 import cafe.neso.minecraft.bouncer.bukkit.commands.*
-import cafe.neso.minecraft.bouncer.bukkit.storage.*
 import org.bukkit.plugin.java.*
 
 internal typealias BukkitPlugin = Bouncer
@@ -12,37 +12,31 @@ internal typealias BukkitPlugin = Bouncer
  * @author moltendorf
  */
 class Bouncer : JavaPlugin() {
-  lateinit var database : Database private set
-  lateinit var players : PlayerAccess private set
-  lateinit var settings : Settings private set
-
   override fun onEnable() {
+    saveDefaultConfig()
+
     instance = this
 
-    // Construct new settings.
-    settings = Settings()
-
-    // Are we enabled?
-    enabled = settings.enabled
+    BouncerCore(object : CoreProvider {
+      override val name get() = description.name
+      override val version get() = description.version
+      override val logger get() = this@Bouncer.logger
+      override val config get() = this@Bouncer.config.getValues(true)
+      override val defaultConfig get() = this@Bouncer.config.defaults.getValues(true)
+    })
 
     if (enabled) {
-      // Connect to database
-      database = Database(settings.database)
-
-      // Load player access table
-      players = PlayerAccess()
-
       // Make sure the built in whitelist is off.
       server.setWhitelist(false)
 
       if (settings.whitelistExistingPlayers) {
-        // Whitelist existing players
-        server.offlinePlayers.forEach { players[it.uniqueId] = true }
+        server.offlinePlayers.forEach { core.players[it.uniqueId] = true }
+        w("Whitelisting existing players: it's recommended you set this to false after the first run.")
       }
 
       if (settings.inheritDefaultWhitelist) {
-        // Inherit the default whitelist
-        server.whitelistedPlayers.forEach { players[it.uniqueId] = true }
+        server.whitelistedPlayers.forEach { core.players[it.uniqueId] = true }
+        w("Inheriting default whitelist: it's recommended you set this to false after the first run.")
       }
 
       // Register commands.
@@ -75,8 +69,6 @@ class Bouncer : JavaPlugin() {
   }
 
   override fun onDisable() {
-    settings.save()
-
     enabled = false
   }
 

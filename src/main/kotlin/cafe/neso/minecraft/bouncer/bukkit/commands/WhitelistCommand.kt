@@ -1,7 +1,8 @@
 package cafe.neso.minecraft.bouncer.bukkit.commands
 
+import cafe.neso.minecraft.bouncer.*
 import cafe.neso.minecraft.bouncer.bukkit.*
-import cafe.neso.minecraft.bouncer.bukkit.storage.*
+import cafe.neso.minecraft.bouncer.storage.*
 import org.bukkit.command.*
 
 /**
@@ -9,7 +10,7 @@ import org.bukkit.command.*
  */
 
 class WhitelistCommand : BaseCommand("whitelist") {
-  override fun onCommand(sender : CommandSender?, command : Command, label : String, args : Array<out String>) : Boolean {
+  override fun onCommand(sender : CommandSender?, command : Command, label : String, args : Array<out String>) : Bool {
     if (sender == null) {
       return false
     }
@@ -30,7 +31,7 @@ class WhitelistCommand : BaseCommand("whitelist") {
                 name = player.name
 
                 try {
-                  val permission = instance.players[player.uniqueId]
+                  val permission = core.players[player.uniqueId]
 
                   if (permission != null && permission) {
                     message = "§aPlayer %s is on the whitelist."
@@ -62,7 +63,7 @@ class WhitelistCommand : BaseCommand("whitelist") {
                 name = player.name
 
                 try {
-                  instance.players[player.uniqueId] = true
+                  core.players[player.uniqueId] = true
                   message = "§aAdded %s to the whitelist!"
                   //message = "§aPlayer %s is already on the whitelist!"
                 } catch (exception : StorageException) {
@@ -91,7 +92,7 @@ class WhitelistCommand : BaseCommand("whitelist") {
                 name = player.name
 
                 try {
-                  instance.players[player.uniqueId] = false
+                  core.players[player.uniqueId] = false
                   message = "§cRemoved %s from the whitelist!"
                   //message = "§cPlayer %s is not on the whitelist!"
                 } catch (exception : StorageException) {
@@ -119,7 +120,7 @@ class WhitelistCommand : BaseCommand("whitelist") {
       1 -> {
         val (action) = args
 
-        var message : String
+        val message : String
 
         if (sender.hasPermission("linkedwhitelist.manage.enable")) {
           when (action) {

@@ -1,6 +1,7 @@
 package cafe.neso.minecraft.bouncer.bukkit
 
-import cafe.neso.minecraft.bouncer.bukkit.storage.*
+import cafe.neso.minecraft.bouncer.*
+import cafe.neso.minecraft.bouncer.storage.*
 import org.bukkit.event.*
 import org.bukkit.event.player.*
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.*
@@ -17,7 +18,7 @@ class Listeners : Listener {
       val id = event.uniqueId
 
       try {
-        val permission = instance.players[id]
+        val permission = core.players[id]
 
         if (permission == null || permission == false) {
           event.disallow(KICK_WHITELIST, "You are not whitelisted.")

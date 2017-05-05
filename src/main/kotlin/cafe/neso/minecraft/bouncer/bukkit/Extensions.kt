@@ -2,8 +2,8 @@
 
 package cafe.neso.minecraft.bouncer.bukkit
 
+import cafe.neso.minecraft.bouncer.settings.*
 import org.bukkit.block.*
-import java.util.logging.Level.*
 
 /**
  * Created by moltendorf on 2016-06-07.
@@ -11,33 +11,18 @@ import java.util.logging.Level.*
  * Extensions file that contains a bunch of useful stuff.
  */
 
-// Welcome to Kotlin
-internal typealias Bool = Boolean
-
 // Package Variables
-internal inline val enabled get() = BukkitPlugin.enabled
+
 internal inline val instance get() = BukkitPlugin.instance
-
-private inline val logger get() = instance.logger
-private inline val scheduler get() = server.scheduler
-
-internal inline val database get() = instance.database
-internal inline val config get() = instance.config
 internal inline val server get() = instance.server
-internal inline val settings get() = instance.settings
+
+// Just for us.
+private inline val scheduler get() = server.scheduler
 
 // Messages
 
 internal fun broadcast(s : String) = server.broadcastMessage(s)
 internal fun console(s : String) = server.consoleSender.sendMessage("[${instance.name}] $s")
-
-// Logging
-
-internal fun trace(s : String, e : Throwable) = logger.log(SEVERE, s, e)
-internal inline fun s(s : () -> Any) = logger.severe("${s()}")
-internal inline fun w(s : () -> Any) = logger.warning("${s()}")
-internal inline fun i(s : () -> Any) = logger.info("${s()}")
-internal inline fun f(s : () -> Any) = logger.fine("${s()}")
 
 // Tasks
 
@@ -49,24 +34,14 @@ internal fun runAsyncTask(delay : Long, s : () -> Unit) = scheduler.runTaskLater
 internal fun runAsyncTask(period : Long, delay : Long = 0, s : () -> Unit) = scheduler.runTaskTimerAsynchronously(instance, s, delay, period)
 
 // Extensions.
-internal inline val <T : Any> T.i : T get() {
-  i { this }
 
-  return this
-}
-
-internal inline val <T : Any> T.f : T get() {
-  f { this }
-
-  return this
-}
-
-internal fun String.toOptionalInt() : Int? {
-  try {
-    return toInt()
-  } catch (e : NumberFormatException) {
-    return null
-  }
+internal fun Settings.saveConfig(path : String = "") {
+//  map.forEach { key, value ->
+//    when (value) {
+//      is Settings -> value.saveConfig("$key.")
+//      else -> instance.config["$path$key"] = value
+//    }
+//  }
 }
 
 internal inline var Block.intData get() = data.toInt()
