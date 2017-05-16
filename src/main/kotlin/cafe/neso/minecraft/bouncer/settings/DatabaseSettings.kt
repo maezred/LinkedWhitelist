@@ -4,15 +4,15 @@ package cafe.neso.minecraft.bouncer.settings
  * Created by moltendorf on 2017-04-30.
  */
 
-class DatabaseSettings : Settings {
-  @Id var host = "localhost"
-  @Id var port = 3306
-  @Id var database = "database"
+class DatabaseSettings : Settings() {
+  var host = Value("localhost")
+  var port = Value(3306)
+  var database = Value("database")
 
-  @Id var prefix = "lw__"
+  var prefix = Value("lw__")
 
-  @Id var username : String? = null
-  @Id var password : String? = null
+  var username = Value<String?>(null)
+  var password = Value<String?>(null)
 
   val url get() = "jdbc:mysql://$host:$port/$database?dontTrackOpenResources=true&useAffectedRows=true"
 }

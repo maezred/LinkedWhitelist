@@ -1,10 +1,12 @@
 package cafe.neso.minecraft.bouncer.bukkit
 
-import cafe.neso.minecraft.bouncer.*
-import cafe.neso.minecraft.bouncer.storage.*
-import org.bukkit.event.*
-import org.bukkit.event.player.*
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.*
+import cafe.neso.minecraft.bouncer.core
+import cafe.neso.minecraft.bouncer.settings
+import cafe.neso.minecraft.bouncer.storage.StorageException
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST
 
 /**
  * Created by moltendorf on 2015-08-01.
@@ -14,7 +16,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.*
 class Listeners : Listener {
   @EventHandler
   fun handleAsyncPlayerPreLoginEvent(event : AsyncPlayerPreLoginEvent) {
-    if (settings.whitelistEnabled) {
+    if (settings.whitelistEnabled.value) {
       val id = event.uniqueId
 
       try {

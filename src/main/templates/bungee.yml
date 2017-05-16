@@ -1,4 +1,4 @@
 name: ${project.name}
 version: ${project.version} (${project.ext.buildDateTime})
-author: ${project.ext.author.name} <${project.ext.author.email}>
+author: ${project.ext.authorName} <${project.ext.authorEmail}>
 main: ${project.group}.${project.ext.artifactId}.bungee.${project.name}

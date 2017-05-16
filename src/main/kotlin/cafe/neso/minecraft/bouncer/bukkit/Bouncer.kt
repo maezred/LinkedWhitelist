@@ -1,8 +1,8 @@
 package cafe.neso.minecraft.bouncer.bukkit
 
 import cafe.neso.minecraft.bouncer.*
-import cafe.neso.minecraft.bouncer.bukkit.commands.*
-import org.bukkit.plugin.java.*
+import cafe.neso.minecraft.bouncer.bukkit.commands.WhitelistCommand
+import org.bukkit.plugin.java.JavaPlugin
 
 internal typealias BukkitPlugin = Bouncer
 
@@ -29,12 +29,12 @@ class Bouncer : JavaPlugin() {
       // Make sure the built in whitelist is off.
       server.setWhitelist(false)
 
-      if (settings.whitelistExistingPlayers) {
+      if (settings.whitelistExistingPlayers.value) {
         server.offlinePlayers.forEach { core.players[it.uniqueId] = true }
         w("Whitelisting existing players: it's recommended you set this to false after the first run.")
       }
 
-      if (settings.inheritDefaultWhitelist) {
+      if (settings.inheritDefaultWhitelist.value) {
         server.whitelistedPlayers.forEach { core.players[it.uniqueId] = true }
         w("Inheriting default whitelist: it's recommended you set this to false after the first run.")
       }
@@ -54,11 +54,11 @@ class Bouncer : JavaPlugin() {
             i { "Registered command /$it (alias of /${command.name})" }
           }
         } catch (e : Exception) {
-          trace("Exception occurred while registering command executor for /${it.command}", e)
+          e.trace("Exception occurred while registering command executor for /${it.command}")
         }
       }
 
-      if (settings.whitelistEnabled) {
+      if (settings.whitelistEnabled.value) {
         // Register listeners
         val manager = server.pluginManager
 

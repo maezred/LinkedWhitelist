@@ -16,8 +16,11 @@ database:
 # Enable/Disable the plugin entirely
 enabled: true
 
-# Ignore this config
+# Ignore this config (the following options are not ignored)
 ignore: false
+
+# Logging level
+logging: info
 
 # Enable test mode
 test: false

@@ -1,9 +1,12 @@
 package cafe.neso.minecraft.bouncer.bukkit.commands
 
-import cafe.neso.minecraft.bouncer.*
-import cafe.neso.minecraft.bouncer.bukkit.*
-import cafe.neso.minecraft.bouncer.storage.*
-import org.bukkit.command.*
+import cafe.neso.minecraft.bouncer.Bool
+import cafe.neso.minecraft.bouncer.bukkit.server
+import cafe.neso.minecraft.bouncer.core
+import cafe.neso.minecraft.bouncer.settings
+import cafe.neso.minecraft.bouncer.storage.StorageException
+import org.bukkit.command.Command
+import org.bukkit.command.CommandSender
 
 /**
  * Created by moltendorf on 2017-04-21.
@@ -125,17 +128,17 @@ class WhitelistCommand : BaseCommand("whitelist") {
         if (sender.hasPermission("linkedwhitelist.manage.enable")) {
           when (action) {
             "enable" -> {
-              if (settings.whitelistEnabled) {
+              if (settings.whitelistEnabled.value) {
                 message = "§aThe whitelist on this server is already enabled!"
               } else {
-                settings.whitelistEnabled = true
+                settings.whitelistEnabled.value = true
                 message = "§aEnabled the whitelist on this server!"
               }
             }
 
             "disable" -> {
-              if (settings.whitelistEnabled) {
-                settings.whitelistEnabled = false
+              if (settings.whitelistEnabled.value) {
+                settings.whitelistEnabled.value = false
                 message = "§cDisabled the whitelist on this server!"
               } else {
                 message = "§cThe whitelist on this server is already disabled!"

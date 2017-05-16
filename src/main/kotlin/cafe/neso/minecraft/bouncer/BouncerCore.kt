@@ -1,9 +1,9 @@
 package cafe.neso.minecraft.bouncer
 
-import cafe.neso.minecraft.bouncer.settings.*
-import cafe.neso.minecraft.bouncer.storage.*
-import kotlin.reflect.*
-import kotlin.reflect.full.*
+import cafe.neso.minecraft.bouncer.settings.GeneralSettings
+import cafe.neso.minecraft.bouncer.settings.Handler
+import cafe.neso.minecraft.bouncer.storage.Database
+import cafe.neso.minecraft.bouncer.storage.PlayerAccess
 
 /**
  * Created by moltendorf on 2017-04-30.
@@ -26,101 +26,22 @@ class BouncerCore(val provider : CoreProvider) {
 
     loadSettings()
 
-    if (settings.ignore || settings.test) {
-      val new = GeneralSettings()
-      val config = provider.defaultConfig.toMutableMap()
-
-      if (settings.test) {
-        // Keep this
-        new.test = true
-        config["test"] = true
-
-        w { "Test mode: ENABLED." }
-      }
-
-      // Keep this
-      new.ignore = true
-      config["ignore"] = true
-
-      w { "Ignoring config." }
-
-      settings = new
-      loadSettings(config, settings)
-    }
-
-    enabled = settings.enabled
+    enabled = settings.enabled.value
 
     database = Database(settings.database)
     players = PlayerAccess()
   }
 
   fun loadSettings() {
-    settings = GeneralSettings()
-    loadSettings(provider.mainConfig, settings)
-  }
+    settings = GeneralSettings(object : Handler {
+      override val config = provider.config
+      override val defaultConfig = provider.defaultConfig
 
-
-  private fun loadSettings(config : Map<*, *>, settings : Settings, prefix : String = "") {
-    try {
-      settings::class.memberProperties.forEach { property ->
-        property.annotations.forEach properties@ {
-          val key = prefix + when (it) {
-            is Key -> it.key
-            is Id -> property.name
-            else -> return@properties
-          }
-
-          val new = config[key] ?: return@properties
-          val type = property.returnType
-
-          test {
-            i { "  $key: ${property.call(settings)}" }
-          }
-
-          // Make sure the types match
-          if (!type.isSupertypeOf(new::class.starProjectedType)) {
-            if (property is KMutableProperty1) {
-              if (type.isSupertypeOf(String::class.starProjectedType)) {
-
-                property.setter.call(settings, "$new")
-
-                test {
-                  if (property.call(settings) != new) {
-                    i { "    ${property.name} does not match default value in config.yml" }
-                  }
-                }
-              }
-            } else if (type.isSubtypeOf(Settings::class.starProjectedType)) {
-              val child = property.call(settings)
-
-              if (child is Settings) {
-                loadSettings(config, child, "$key.")
-              } else {
-                test {
-                  if (property.call(settings) != new) {
-                    i { "    ${property.name} does not match default value in config.yml" }
-                  }
-                }
-              }
-            } else {
-              test {
-                if (property.call(settings) != new) {
-                  i { "    ${property.name} does not match default value in config.yml" }
-                }
-              }
-            }
-
-            return@properties
-          }
-
-          if (property is KMutableProperty1) {
-            property.setter.call(settings, new)
-          }
-        }
+      override fun set(key: String, value: Any?) {
+          provider.configChanged(key, value)
       }
-    } catch (e : IllegalAccessError) {
-      trace("$name cannot be reloaded in some conditions. Please restart to restore functionality.", e)
-    }
+    })
+    settings.load(provider.mainConfig)
   }
 
   companion object {
